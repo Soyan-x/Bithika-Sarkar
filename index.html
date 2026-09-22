@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>For Bithika Sarkar ❤️</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+</head>
+
+
+<body>
+
+    <!-- Background particles -->
+    <canvas id="particles"></canvas>
+
+
+    <main class="container">
+
+
+        <!-- =================================
+             START SCREEN
+             ================================= -->
+
+        <section id="startScreen"
+            class="screen active">
+
+            <div class="heart">
+                ❤️
+            </div>
+
+
+            <p class="small-text">
+                A little surprise is waiting for you...
+            </p>
+
+
+            <h1>
+                Bithika Sarkar
+            </h1>
+
+
+            <p class="subtitle">
+                There is something I have been
+                wanting to tell you.
+            </p>
+
+
+            <button id="startBtn">
+                Open My Heart ❤️
+            </button>
+
+        </section>
+
+
+
+        <!-- =================================
+             LOVE REVEAL SCREEN
+             ================================= -->
+
+        <section id="revealScreen"
+            class="screen">
+
+
+            <!-- Photo -->
+
+            <div class="photo-wrapper">
+
+                <img
+                    src="Bithika.jpg"
+                    alt="Bithika Sarkar">
+
+            </div>
+
+
+
+            <!-- Greeting -->
+
+            <p class="hello">
+                Hey, Bithika...
+            </p>
+
+
+            <!-- Typing text -->
+
+            <h2 id="typingText"></h2>
+
+
+            <!-- Main message -->
+
+            <p id="message"
+                class="message">
+            </p>
+
+
+
+            <!-- =================================
+                 LOVE DASHBOARD
+                 ================================= -->
+
+            <div id="loveReveal"
+                class="love-reveal">
+
+
+                <!-- Heart -->
+
+                <div class="big-heart">
+                    ❤️
+                </div>
+
+
+                <!-- Main title -->
+
+                <h3>
+                    I Love You
+                </h3>
+
+
+                <!-- Name -->
+
+                <p class="love-name">
+                    Bithika Sarkar
+                </p>
+
+
+
+                <!-- Love messages -->
+
+                <div class="love-messages">
+
+
+                    <div class="love-card">
+                        <div class="card-icon">
+                            ❤️
+                        </div>
+
+                        <p>
+                            You make my ordinary
+                            days feel special.
+                        </p>
+                    </div>
+
+
+
+                    <div class="love-card">
+                        <div class="card-icon">
+                            🌸
+                        </div>
+
+                        <p>
+                            Your smile is one of my
+                            favorite things in this world.
+                        </p>
+                    </div>
+
+
+
+                    <div class="love-card">
+                        <div class="card-icon">
+                            💕
+                        </div>
+
+                        <p>
+                            I don't need a perfect life.
+                            I just want beautiful moments
+                            with you.
+                        </p>
+                    </div>
+
+
+
+                    <div class="love-card">
+                        <div class="card-icon">
+                            ✨
+                        </div>
+
+                        <p>
+                            Somehow, you became a very
+                            special part of my thoughts.
+                        </p>
+                    </div>
+
+
+
+                    <div class="love-card">
+                        <div class="card-icon">
+                            🫶
+                        </div>
+
+                        <p>
+                            I want to be someone who
+                            always makes you feel valued
+                            and loved.
+                        </p>
+                    </div>
+
+
+
+                    <div class="love-card">
+                        <div class="card-icon">
+                            🌙
+                        </div>
+
+                        <p>
+                            Even on my busiest days,
+                            somehow my thoughts find
+                            their way back to you.
+                        </p>
+                    </div>
+
+
+
+                    <div class="love-card">
+                        <div class="card-icon">
+                            💖
+                        </div>
+
+                        <p>
+                            If I could choose one person
+                            to keep close to my heart,
+                            it would be you.
+                        </p>
+                    </div>
+
+
+
+                    <div class="love-card">
+                        <div class="card-icon">
+                            🌹
+                        </div>
+
+                        <p>
+                            I don't know what the future
+                            holds, but I would love to
+                            discover it with you.
+                        </p>
+                    </div>
+
+
+
+                    <!-- Special message -->
+
+                    <div class="special-message">
+
+                        <span>
+                            💌
+                        </span>
+
+                        <p>
+                            Maybe I don't have the
+                            perfect words to explain
+                            everything I feel...
+                        </p>
+
+                        <p>
+                            But I know that whenever
+                            I think about someone special,
+                            your name comes to my mind.
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- Question -->
+
+                    <div class="question">
+                        Will you be mine? 💍
+                    </div>
+
+
+                    <!-- Final hearts -->
+
+                    <div class="final-hearts">
+                        ❤️ 💕 ❤️
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =================================
+         BACKGROUND MUSIC
+         ================================= -->
+
+    <audio id="bgMusic"
+        loop>
+
+        <source
+            src="music.mp3"
+            type="audio/mpeg">
+
+    </audio>
+
+
+
+    <!-- JavaScript -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
