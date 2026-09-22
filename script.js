@@ -5,70 +5,145 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    const startBtn = document.getElementById("startBtn");
-    const startScreen = document.getElementById("startScreen");
-    const revealScreen = document.getElementById("revealScreen");
+    // ========================================
+    // GET ELEMENTS
+    // ========================================
 
-    const bgMusic = document.getElementById("bgMusic");
+    const startBtn =
+        document.getElementById("startBtn");
 
-    const typingText = document.getElementById("typingText");
-    const message = document.getElementById("message");
+    const startScreen =
+        document.getElementById("startScreen");
 
-    const loveReveal = document.getElementById("loveReveal");
+    const revealScreen =
+        document.getElementById("revealScreen");
 
-    let autoScrollStarted = false;
-    let userInteracted = false;
+    const bgMusic =
+        document.getElementById("bgMusic");
+
+    const typingText =
+        document.getElementById("typingText");
+
+    const message =
+        document.getElementById("message");
+
+    const loveReveal =
+        document.getElementById("loveReveal");
+
+
+    // ========================================
+    // AUTO SCROLL SETTINGS
+    // ========================================
+
+    // আগের speed
+    const scrollSpeed = 0.6;
+
+    // Auto-scroll চলছে কিনা
+    let autoScrollRunning = false;
+
+    // User বর্তমানে manually scroll করছে কিনা
+    let userInteracting = false;
+
+    // Resume করার timer
+    let resumeTimer = null;
 
 
     // ========================================
     // OPEN MY HEART
     // ========================================
 
-    startBtn.addEventListener("click", function () {
+    if (startBtn) {
 
-        // Start music
-        if (bgMusic) {
+        startBtn.addEventListener(
+            "click",
+            function () {
 
-            bgMusic.volume = 0.55;
-
-            bgMusic.play().catch(function (error) {
-                console.log("Music:", error);
-            });
-
-        }
+                console.log(
+                    "Open My Heart clicked ❤️"
+                );
 
 
-        // Hide start screen
-        startScreen.classList.remove("active");
+                // ------------------------------
+                // Start music
+                // ------------------------------
+
+                if (bgMusic) {
+
+                    bgMusic.volume = 0.55;
+
+                    bgMusic.play().catch(
+                        function (error) {
+
+                            console.log(
+                                "Music could not start:",
+                                error
+                            );
+
+                        }
+                    );
+
+                }
 
 
-        // Show reveal screen
-        revealScreen.classList.add("active");
+                // ------------------------------
+                // Hide start screen
+                // ------------------------------
+
+                startScreen.classList.remove(
+                    "active"
+                );
 
 
-        // Start reveal
-        startReveal();
+                // ------------------------------
+                // Show reveal screen
+                // ------------------------------
+
+                revealScreen.classList.add(
+                    "active"
+                );
 
 
-        // Start automatic scrolling
-        setTimeout(function () {
-            startAutoScroll();
-        }, 2500);
+                // ------------------------------
+                // Start text reveal
+                // ------------------------------
 
-    });
+                startReveal();
+
+
+                // ------------------------------
+                // Start auto-scroll
+                // ------------------------------
+
+                setTimeout(
+                    function () {
+
+                        startAutoScroll();
+
+                    },
+                    2500
+                );
+
+            }
+        );
+
+    }
 
 
     // ========================================
-    // REVEAL TEXT
+    // START REVEAL
     // ========================================
 
     function startReveal() {
 
-        const firstText = "Bithika...";
+        const firstText =
+            "Bithika...";
+
 
         const secondText =
             "There is something my heart has been trying to say.";
 
+
+        // First text
 
         typeText(
             typingText,
@@ -76,24 +151,48 @@ document.addEventListener("DOMContentLoaded", function () {
             100,
             function () {
 
-                setTimeout(function () {
 
-                    typeText(
-                        message,
-                        secondText,
-                        45,
-                        function () {
+                setTimeout(
+                    function () {
 
-                            setTimeout(function () {
 
-                                loveReveal.classList.add("show");
+                        // Second text
 
-                            }, 700);
+                        typeText(
+                            message,
+                            secondText,
+                            45,
+                            function () {
 
-                        }
-                    );
 
-                }, 700);
+                                setTimeout(
+                                    function () {
+
+
+                                        // Show love dashboard
+
+                                        if (loveReveal) {
+
+                                            loveReveal.classList.add(
+                                                "show"
+                                            );
+
+                                        }
+
+
+                                    },
+                                    700
+                                );
+
+
+                            }
+                        );
+
+
+                    },
+                    700
+                );
+
 
             }
         );
@@ -105,7 +204,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // TYPING EFFECT
     // ========================================
 
-    function typeText(element, text, speed, callback) {
+    function typeText(
+        element,
+        text,
+        speed,
+        callback
+    ) {
 
         if (!element) {
             return;
@@ -114,24 +218,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
         element.textContent = "";
 
+
         let index = 0;
 
 
         function type() {
 
+
             if (index < text.length) {
+
 
                 element.textContent +=
                     text.charAt(index);
 
+
                 index++;
 
-                setTimeout(type, speed);
+
+                setTimeout(
+                    type,
+                    speed
+                );
+
 
             } else {
 
+
                 if (callback) {
+
                     callback();
+
                 }
 
             }
@@ -145,29 +261,53 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ========================================
-    // AUTOMATIC SCROLL
+    // AUTO SCROLL
     // ========================================
 
     function startAutoScroll() {
 
-        if (autoScrollStarted) {
+        // যদি user manually scroll করে,
+        // তাহলে এখনই auto-scroll শুরু করবে না
+
+        if (userInteracting) {
+
             return;
+
         }
 
-        autoScrollStarted = true;
+
+        // যদি already চলছে,
+        // তাহলে নতুন loop তৈরি করবে না
+
+        if (autoScrollRunning) {
+
+            return;
+
+        }
 
 
-        let scrollSpeed = 0.6;
+        autoScrollRunning = true;
 
 
-        function autoScroll() {
+        function scrollStep() {
 
-            // Stop automatic scrolling if
-            // user manually touches the screen
-            if (userInteracted) {
+
+            // ------------------------------
+            // User manually scrolling
+            // ------------------------------
+
+            if (userInteracting) {
+
+                autoScrollRunning = false;
+
                 return;
+
             }
 
+
+            // ------------------------------
+            // Scroll down
+            // ------------------------------
 
             window.scrollBy(
                 0,
@@ -175,72 +315,219 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
+            // ------------------------------
+            // Check bottom
+            // ------------------------------
+
             const currentPosition =
                 window.innerHeight +
                 window.scrollY;
+
 
             const pageHeight =
                 document.documentElement.scrollHeight;
 
 
-            // If reached bottom
             if (
                 currentPosition >=
                 pageHeight - 5
             ) {
+
+                autoScrollRunning = false;
 
                 return;
 
             }
 
 
+            // Continue
+
             requestAnimationFrame(
-                autoScroll
+                scrollStep
             );
 
         }
 
 
-        autoScroll();
+        requestAnimationFrame(
+            scrollStep
+        );
 
     }
 
 
     // ========================================
-    // DETECT USER MANUAL SCROLL
+    // TOUCH START
+    // ========================================
+
+    window.addEventListener(
+        "touchstart",
+        function () {
+
+            // Auto-scroll pause
+
+            userInteracting = true;
+
+
+            // Existing timer cancel
+
+            if (resumeTimer) {
+
+                clearTimeout(
+                    resumeTimer
+                );
+
+            }
+
+        },
+        {
+            passive: true
+        }
+    );
+
+
+    // ========================================
+    // TOUCH MOVE
+    // ========================================
+
+    window.addEventListener(
+        "touchmove",
+        function () {
+
+            // যতক্ষণ finger দিয়ে scroll করবে,
+            // auto-scroll বন্ধ থাকবে
+
+            userInteracting = true;
+
+
+            if (resumeTimer) {
+
+                clearTimeout(
+                    resumeTimer
+                );
+
+            }
+
+        },
+        {
+            passive: true
+        }
+    );
+
+
+    // ========================================
+    // TOUCH END
+    // ========================================
+
+    window.addEventListener(
+        "touchend",
+        function () {
+
+            // Finger screen থেকে সরেছে
+
+            userInteracting = false;
+
+
+            // আগের timer cancel
+
+            if (resumeTimer) {
+
+                clearTimeout(
+                    resumeTimer
+                );
+
+            }
+
+
+            // 0.6 second পরে আবার শুরু
+
+            resumeTimer = setTimeout(
+                function () {
+
+                    startAutoScroll();
+
+                },
+                600
+            );
+
+        },
+        {
+            passive: true
+        }
+    );
+
+
+    // ========================================
+    // TOUCH CANCEL
+    // ========================================
+
+    window.addEventListener(
+        "touchcancel",
+        function () {
+
+            userInteracting = false;
+
+
+            if (resumeTimer) {
+
+                clearTimeout(
+                    resumeTimer
+                );
+
+            }
+
+
+            resumeTimer = setTimeout(
+                function () {
+
+                    startAutoScroll();
+
+                },
+                600
+            );
+
+        },
+        {
+            passive: true
+        }
+    );
+
+
+    // ========================================
+    // PC MOUSE WHEEL
     // ========================================
 
     window.addEventListener(
         "wheel",
         function () {
 
-            userInteracted = true;
+            // Pause auto-scroll
 
-        },
-        {
-            passive: true
-        }
-    );
+            userInteracting = true;
 
 
-    window.addEventListener(
-        "touchstart",
-        function () {
+            if (resumeTimer) {
 
-            userInteracted = true;
+                clearTimeout(
+                    resumeTimer
+                );
 
-        },
-        {
-            passive: true
-        }
-    );
+            }
 
 
-    window.addEventListener(
-        "touchmove",
-        function () {
+            // Mouse wheel থামার
+            // 0.6 second পরে আবার শুরু
 
-            userInteracted = true;
+            resumeTimer = setTimeout(
+                function () {
+
+                    userInteracting = false;
+
+                    startAutoScroll();
+
+                },
+                600
+            );
 
         },
         {
@@ -254,10 +541,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // ========================================
 
     const canvas =
-        document.getElementById("particles");
+        document.getElementById(
+            "particles"
+        );
 
 
     if (canvas) {
+
 
         const ctx =
             canvas.getContext("2d");
@@ -265,6 +555,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let particles = [];
 
+
+        // ====================================
+        // RESIZE CANVAS
+        // ====================================
 
         function resizeCanvas() {
 
@@ -286,9 +580,16 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        // Create particles
+        // ====================================
+        // CREATE PARTICLES
+        // ====================================
 
-        for (let i = 0; i < 90; i++) {
+        for (
+            let i = 0;
+            i < 90;
+            i++
+        ) {
+
 
             particles.push({
 
@@ -306,12 +607,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 speedX:
                     (
-                        Math.random() - 0.5
+                        Math.random() -
+                        0.5
                     ) * 0.4,
 
                 speedY:
                     (
-                        Math.random() - 0.5
+                        Math.random() -
+                        0.5
                     ) * 0.4,
 
                 opacity:
@@ -323,9 +626,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        // Animate particles
+        // ====================================
+        // ANIMATE PARTICLES
+        // ====================================
 
         function animateParticles() {
+
 
             ctx.clearRect(
                 0,
@@ -335,62 +641,88 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-            particles.forEach(function (p) {
-
-                p.x += p.speedX;
-                p.y += p.speedY;
+            particles.forEach(
+                function (p) {
 
 
-                // Horizontal wrapping
+                    // Move
 
-                if (p.x < 0) {
-                    p.x = canvas.width;
+                    p.x += p.speedX;
+
+                    p.y += p.speedY;
+
+
+                    // Horizontal wrap
+
+                    if (p.x < 0) {
+
+                        p.x =
+                            canvas.width;
+
+                    }
+
+
+                    if (
+                        p.x >
+                        canvas.width
+                    ) {
+
+                        p.x = 0;
+
+                    }
+
+
+                    // Vertical wrap
+
+                    if (p.y < 0) {
+
+                        p.y =
+                            canvas.height;
+
+                    }
+
+
+                    if (
+                        p.y >
+                        canvas.height
+                    ) {
+
+                        p.y = 0;
+
+                    }
+
+
+                    // Draw
+
+                    ctx.beginPath();
+
+
+                    ctx.arc(
+                        p.x,
+                        p.y,
+                        p.size,
+                        0,
+                        Math.PI * 2
+                    );
+
+
+                    ctx.fillStyle =
+                        "rgba(255, 150, 210, " +
+                        p.opacity +
+                        ")";
+
+
+                    ctx.shadowBlur = 10;
+
+
+                    ctx.shadowColor =
+                        "rgba(255, 100, 180, 0.8)";
+
+
+                    ctx.fill();
+
                 }
-
-                if (p.x > canvas.width) {
-                    p.x = 0;
-                }
-
-
-                // Vertical wrapping
-
-                if (p.y < 0) {
-                    p.y = canvas.height;
-                }
-
-                if (p.y > canvas.height) {
-                    p.y = 0;
-                }
-
-
-                // Draw particle
-
-                ctx.beginPath();
-
-                ctx.arc(
-                    p.x,
-                    p.y,
-                    p.size,
-                    0,
-                    Math.PI * 2
-                );
-
-
-                ctx.fillStyle =
-                    "rgba(255, 150, 210, " +
-                    p.opacity +
-                    ")";
-
-
-                ctx.shadowBlur = 10;
-
-                ctx.shadowColor =
-                    "rgba(255, 100, 180, 0.8)";
-
-
-                ctx.fill();
-
-            });
+            );
 
 
             requestAnimationFrame(
